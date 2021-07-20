@@ -91,8 +91,8 @@ Use the higher-order function getWinners to do the following:
 3. Determines the winner (home or away) of each `finals` game. 
 4. Returns the names of all winning countries in an array called `winners` */ 
 
-function getWinners(data, callback) {
-    const finalsInfo = callback(data);
+function getWinners(array, callback) {
+    const finalsInfo = callback(array);
     const winners = finalsInfo.map(function(item){
         if (item["Home Team Goals"]>item["Away Team Goals"]){
             return item["Home Team Name"];
@@ -116,10 +116,16 @@ Use the higher-order function getWinnersByYear to do the following:
 hint: the strings returned need to exactly match the string in step 4.
  */
 
-function getWinnersByYear(/* code here */) {
-    /* code here */
+function getWinnersByYear(array, cbYears, cbWinners) {
+   const winnerList = cbWinners(array,getFinals);
+   const years = cbYears(array, getFinals);
+   
+   return winnerList.map(function(item, index){
+     return `In ${years[index]}, ${item} won the world cup!`
+   });
 }
 
+console.log(getWinnersByYear(fifaData, getYears, getWinners));
 
 
 /* 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀 Task 6: 🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀
@@ -132,11 +138,16 @@ Use the higher order function getAverageGoals to do the following:
  Example of invocation: getAverageGoals(getFinals(fifaData));
 */
 
-function getAverageGoals(/* code here */) {
-   /* code here */
+function getAverageGoals(array,getFinalscb) {
+     const finalsInfo = getFinalscb(array);
+     const totalGoals = finalsInfo.reduce(function(acc, item){
+         acc + item["Home Team Goals"] + item["Away Team Goals"];
+    },0);
+    const average = (totalGoals/finalsInfo.length).toFixed(2);
+    return average;
 }
 
-
+console.log(getAverageGoals(fifaData, getFinals));
 
 
 /// 🥅 STRETCH 🥅 ///
